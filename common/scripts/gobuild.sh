@@ -75,4 +75,6 @@ time GOOS=${BUILD_GOOS} GOARCH=${BUILD_GOARCH} ${GOBINARY} build \
         -o "${OUT}" \
         -trimpath \
         -pkgdir="${GOPKG}/${BUILD_GOOS}_${BUILD_GOARCH}" \
-        -ldflags "${LDFLAGS} ${LD_EXTRAFLAGS}" "${@}"
+        -ldflags "${LDFLAGS} ${LD_EXTRAFLAGS}" "${@}" 2>&1 \
+            | tee /dev/tty | grep -q -E "flag provided but not defined.*" \
+                && echo -e "\n!!! Please update the Go language version to >=1.13"
